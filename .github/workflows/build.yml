@@ -41,24 +41,24 @@ jobs:
             os: windows-latest
             aarch: amd64
             targets: exe
-            filename: hiddify-windows-x64
+            filename: mrzbcli-windows-x64
 
           - platform: linux
             os: ubuntu-latest
             aarch: amd64
             targets: AppImage
-            filename: hiddify-linux-x64
+            filename: mrzbcli-linux-x64
 
           - platform: macos
             os: macos-13
             aarch: universal
             targets: dmg
-            filename: hiddify-macos-universal
+            filename: mrzbcli-macos-universal
 
           # - platform: ios
           #   os: macos-13
           #   aarch: universal
-          #   filename: hiddify-ios
+          #   filename: mrzbcli-ios
           #   targets: ipa
 
     runs-on: ${{ matrix.os }}
@@ -132,11 +132,10 @@ jobs:
       - name: Setup Android Signing Properties
         if: startsWith(matrix.platform,'android')
         run: |
-          echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > android/key.jks
-          echo "storeFile=$(pwd)/android/key.jks" > android/key.properties
-          echo "storePassword=${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=../upload-keystore.jks" > android/key.properties
+          echo "storePassword=s1mfer" >> android/key.properties
+          echo "keyPassword=s1mfer" >> android/key.properties
+          echo "keyAlias=upload" >> android/key.properties
 
       - name: Setup Apple certificate and provisioning profile
         if: startsWith(matrix.os,'macos')
@@ -203,32 +202,32 @@ jobs:
 
           xcopy /s /v '.\.github\help\mac-windows\' .\tmp_out\
           cd tmp_out
-          Compress-Archive  -Path .\* -DestinationPath  ..\out\hiddify-${{ matrix.platform }}-x64-setup.zip
+          Compress-Archive  -Path .\* -DestinationPath  ..\out\mrzbcli-${{ matrix.platform }}-x64-setup.zip
           cd ..
 
 
           mkdir HiddifyNext-portable
-          xcopy /s /v D:\a\hiddify-next\hiddify-next\build\windows\runner\Release\ .\HiddifyNext-portable\
+          xcopy /s /v D:\a\mrzbcli-next\mrzbcli-next\build\windows\runner\Release\ .\HiddifyNext-portable\
           xcopy /s /v '.\.github\help\mac-windows\' .\HiddifyNext-portable\
           cd HiddifyNext-portable
-          Compress-Archive .\ ..\out\hiddify-${{ matrix.platform }}-x64-portable.zip
+          Compress-Archive .\ ..\out\mrzbcli-${{ matrix.platform }}-x64-portable.zip
 
       - name: Copy to out Android apk
         if: matrix.platform == 'android-apk'
         run: |
           mkdir out
           ls -R ./build/app/outputs
-          cp ./build/app/outputs/flutter-apk/*arm64-v8a*.apk out/hiddify-android-arm64.apk || echo "no arm64 apk"
-          cp ./build/app/outputs/flutter-apk/*armeabi-v7a*.apk out/hiddify-android-arm7.apk || echo "no arm7 apk"
-          cp ./build/app/outputs/flutter-apk/*x86_64*.apk out/hiddify-android-x86_64.apk || echo "no x64 apk"
-          cp ./build/app/outputs/flutter-apk/app-release.apk out/hiddify-android-universal.apk || echo "no universal apk"
+          cp ./build/app/outputs/flutter-apk/*arm64-v8a*.apk out/mrzbcli-android-arm64.apk || echo "no arm64 apk"
+          cp ./build/app/outputs/flutter-apk/*armeabi-v7a*.apk out/mrzbcli-android-arm7.apk || echo "no arm7 apk"
+          cp ./build/app/outputs/flutter-apk/*x86_64*.apk out/mrzbcli-android-x86_64.apk || echo "no x64 apk"
+          cp ./build/app/outputs/flutter-apk/app-release.apk out/mrzbcli-android-universal.apk || echo "no universal apk"
 
       - name: Copy to out Android aab
         if: matrix.platform == 'android-aab'
         run: |
           mkdir out
           ls -R ./build/app/outputs
-          cp ./build/app/outputs/bundle/release/app-release.aab out/hiddify-android-market.aab || echo "no aab"
+          cp ./build/app/outputs/bundle/release/app-release.aab out/mrzbcli-android-market.aab || echo "no aab"
 
       - name: Copy to out unix
         if: matrix.platform == 'linux' || matrix.platform == 'macos' || matrix.platform == 'ios'
@@ -339,12 +338,12 @@ jobs:
           ls -R ./out
           ls -R ./.github/
           ls -R ./.git/
-          mv out/hiddify-android-market.aab  hiddify-android-market.aab
+          mv out/mrzbcli-android-market.aab  mrzbcli-android-market.aab
 
       - name: prepare_release_message
         run: |
           pip install gitchangelog pystache mustache markdown
-          # prelease=$(curl --silent "https://api.github.com/repos/hiddify/hiddify-next/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+          # prelease=$(curl --silent "https://api.github.com/repos/ServRU-VPN/servruvpn/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
           # current="${{ github.ref_name }}"
           # gitchangelog $prelease..$current > release.md
           sed 's|RELEASE_TAG|${{ github.ref_name }}|g' ./.github/release_message.md >> release.md
@@ -399,18 +398,18 @@ jobs:
         uses: isaacrlevin/winget-publish-action@v.5
         with:
           publish-type: 'Update'
-          user: 'Hiddify'
+          user: 'noa1ms'
           package: 'Next'
           version: ${{ steps.version.outputs.value }}
-          url: 'https://github.com/hiddify/hiddify-next/releases/download/${{ github.ref_name }}/hiddify-windows-x64-setup.zip'
+          url: 'https://github.com/ServRU-VPN/servruvpn/releases/download/${{ github.ref_name }}/mrzbcli-windows-x64-setup.zip'
           token: ${{ secrets.WINGET_TOKEN }}
 
       - name: Winget Publish Beta
         uses: isaacrlevin/winget-publish-action@v.5
         with:
           publish-type: 'Update'
-          user: 'Hiddify'
+          user: 'noa1ms'
           package: 'Next.Beta'
           version: ${{ steps.version.outputs.value }}
-          url: 'https://github.com/hiddify/hiddify-next/releases/download/${{ github.ref_name }}/hiddify-windows-x64-setup.zip'
+          url: 'https://github.com/ServRU-VPN/servruvpn/releases/download/${{ github.ref_name }}/mrzbcli-windows-x64-setup.zip'
           token: ${{ secrets.WINGET_TOKEN }}
