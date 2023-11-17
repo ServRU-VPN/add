@@ -60,8 +60,7 @@
           [![Build](https://github.com/noa1ms/servruvpn/actions/workflows/build.yml/badge.svg)](https://github.com/noa1ms/servruvpn/actions/workflows/build.yml)
         </td>
         </tr>
-        <tr>
-            
+ 
     </tbody>
 </table>
 
