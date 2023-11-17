@@ -1,19 +1,19 @@
 abstract class Constants {
-  static const appName = "Hiddify Next";
+  static const appName = "ServRU VPN";
   static const geoipFileName = "geoip.db";
   static const geositeFileName = "geosite.db";
   static const configsFolderName = "configs";
   static const localHost = "127.0.0.1";
-  static const githubUrl = "https://github.com/hiddify/hiddify-next";
+  static const githubUrl = "https://github.com/ServRU-VPN/servruvpn";
   static const githubReleasesApiUrl =
-      "https://api.github.com/repos/hiddify/hiddify-next/releases";
+      "https://api.github.com/repos/ServRU-VPN/servruvpn/releases";
   static const githubLatestReleaseUrl =
-      "https://github.com/hiddify/hiddify-next/releases/latest";
+      "https://github.com/ServRU-VPN/servruvpn/releases/latest";
   static const appCastUrl =
-      "https://raw.githubusercontent.com/hiddify/hiddify-next/main/appcast.xml";
-  static const telegramChannelUrl = "https://t.me/hiddify";
-  static const privacyPolicyUrl = "https://hiddify.com/en/privacy-policy/";
-  static const termsAndConditionsUrl = "https://hiddify.com/terms/";
+      "https://raw.githubusercontent.com/ServRU-VPN/servruvpn/main/appcast.xml";
+  static const telegramChannelUrl = "https://t.me/servruvpn_bot";
+  static const privacyPolicyUrl = "https://mrzbcli.ru/en/privacy-policy/";
+  static const termsAndConditionsUrl = "https://mrzbcli.ru/terms/";
 }
 
 abstract class Defaults {
